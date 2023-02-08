@@ -94,11 +94,11 @@ func CreateAndPushImages(repos map[string]string, tags []string) error {
 
 // retagAndPush retags local images based on the remote repo and pushes them
 // with :test tag.
-func retagAndPush(ctx context.Context, registry string, localImgs map[string]string) (map[string]string, error) {
+func retagAndPush(ctx context.Context, registry string, localImgs map[string]string, tag string) (map[string]string, error) {
 	imgs := map[string]string{}
 	for name, li := range localImgs {
 		remoteImage := path.Join(registry, name)
-		remoteImage += ":test"
+		remoteImage += ":" + tag
 
 		log.Printf("pushing flux test image %s\n", remoteImage)
 		// Retag local image and push.

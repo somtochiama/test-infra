@@ -69,5 +69,5 @@ func GetGoogleArtifactRegistryAndRepository(project, region, repositoryID string
 func PushTestAppImagesGCR(ctx context.Context, localImgs map[string]string, project, region, artifactRepoID string) (map[string]string, error) {
 	// Get the repository name and construct the image names accordingly.
 	_, repo := GetGoogleArtifactRegistryAndRepository(project, region, artifactRepoID)
-	return retagAndPush(ctx, repo, localImgs)
+	return retagAndPush(ctx, repo, localImgs, "test")
 }

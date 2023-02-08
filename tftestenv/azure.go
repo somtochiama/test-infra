@@ -49,5 +49,5 @@ func RegistryLoginACR(ctx context.Context, registryURL string) error {
 // called after RegistryLoginACR to ensure the local docker client is already
 // logged in and is capable of pushing the test images.
 func PushTestAppImagesACR(ctx context.Context, localImgs map[string]string, registryURL string) (map[string]string, error) {
-	return retagAndPush(ctx, registryURL, localImgs)
+	return retagAndPush(ctx, registryURL, localImgs, "test")
 }
