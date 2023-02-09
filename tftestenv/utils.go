@@ -92,29 +92,26 @@ func CreateAndPushImages(repos map[string]string, tags []string) error {
 	return nil
 }
 
-// retagAndPush retags local images based on the remote repo and pushes them
+// RetagAndPush retags local images based on the remote repo and pushes them
 // with :test tag.
-func retagAndPush(ctx context.Context, registry string, localImgs map[string]string, tag string) (map[string]string, error) {
-	imgs := map[string]string{}
-	for name, li := range localImgs {
-		remoteImage := path.Join(registry, name)
-		remoteImage += ":" + tag
+func RetagAndPush(ctx context.Context, registry, name, image, tag string) (string, error) {
+	remoteImage := path.Join(registry, name)
+	remoteImage += ":" + tag
 
-		log.Printf("pushing flux test image %s\n", remoteImage)
-		// Retag local image and push.
-		if err := RunCommand(ctx, "./",
-			fmt.Sprintf("docker tag %s %s", li, remoteImage),
-			RunCommandOptions{},
-		); err != nil {
-			return nil, err
-		}
-		if err := RunCommand(ctx, "./",
-			fmt.Sprintf("docker push %s", remoteImage),
-			RunCommandOptions{},
-		); err != nil {
-			return nil, err
-		}
-		imgs[name] = remoteImage
+	log.Printf("pushing flux test image %s\n", remoteImage)
+	// Retag local image and push.
+	if err := RunCommand(ctx, "./",
+		fmt.Sprintf("docker tag %s %s", image, remoteImage),
+		RunCommandOptions{},
+	); err != nil {
+		return "", err
 	}
-	return imgs, nil
+	if err := RunCommand(ctx, "./",
+		fmt.Sprintf("docker push %s", remoteImage),
+		RunCommandOptions{},
+	); err != nil {
+		return "", err
+	}
+
+	return remoteImage, nil
 }
