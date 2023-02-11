@@ -72,11 +72,12 @@ func PushTestAppImagesGCR(ctx context.Context, localImgs map[string]string, proj
 	imageRepo := map[string]string{}
 
 	for name, image := range localImgs {
-		pushedImg, err := RetagAndPush(ctx, repo, name, image, "test")
+		remoteImg := fmt.Sprintf("%s/%s:test", repo, name)
+		err := RetagAndPush(ctx, image, remoteImg)
 		if err != nil {
 			return nil, err
 		}
-		imageRepo[name] = pushedImg
+		imageRepo[name] = remoteImg
 	}
 	return imageRepo, nil
 }
