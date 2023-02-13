@@ -29,7 +29,7 @@ type Options struct {
 	Retain bool
 	// Existing flag make the test to use existing terraform state.
 	Existing bool
-	// verbose flag to enable output of terraform execution.
+	// Verbose flag to enable output of terraform execution.
 	Verbose bool
 }
 
@@ -51,16 +51,11 @@ func (o *Options) Validate() error {
 		return fmt.Errorf("-provider flag must be set to one of %v", supportedProviders)
 	}
 
-	var supported bool
-
 	for _, p := range supportedProviders {
 		if p == o.Provider {
-			supported = true
+			return nil
 		}
 	}
-	if !supported {
-		return fmt.Errorf("unsupported provider %q, must be one of %v", o.Provider, supportedProviders)
-	}
-
+	
 	return nil
 }

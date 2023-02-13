@@ -101,12 +101,9 @@ func RetagAndPush(ctx context.Context, localImage, remoteImage string) error {
 	); err != nil {
 		return err
 	}
-	if err := RunCommand(ctx, "./",
+
+	return RunCommand(ctx, "./",
 		fmt.Sprintf("docker push %s", remoteImage),
 		RunCommandOptions{},
-	); err != nil {
-		return err
-	}
-
-	return nil
+	)
 }
