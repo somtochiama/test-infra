@@ -57,6 +57,8 @@ type Environment struct {
 	existing bool
 	verbose  bool
 	buildDir string
+
+	tfvars []string
 }
 
 // createKubeconfig create a kubeconfig for the target cluster and writes to
@@ -103,6 +105,12 @@ func WithCreateKubeconfig(create CreateKubeconfig) EnvironmentOption {
 func WithBuildDir(dir string) EnvironmentOption {
 	return func(e *Environment) {
 		e.buildDir = dir
+	}
+}
+
+func WithTfVars(vars []string) EnvironmentOption {
+	return func(e *Environment) {
+		e.tfvars = vars
 	}
 }
 
@@ -217,7 +225,12 @@ func New(ctx context.Context, scheme *runtime.Scheme, terraformPath string, kube
 func (env *Environment) createAndConfigure(ctx context.Context, scheme *runtime.Scheme, kubeconfigPath string) error {
 	// Apply Terraform, read the output values and construct kubeconfig.
 	log.Println("Applying Terraform")
-	err := env.tf.Apply(ctx)
+
+	var applyOpts []tfexec.ApplyOption
+	for _, tfvar := range env.tfvars {
+		applyOpts = append(applyOpts, tfexec.Var(tfvar))
+	}
+	err := env.tf.Apply(ctx, applyOpts...)
 	if err != nil {
 		return fmt.Errorf("error running apply: %v", err)
 	}
