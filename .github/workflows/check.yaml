@@ -19,4 +19,5 @@ jobs:
           terraform_wrapper: false
       - name: Check tf files
         run: |
-          make fmt
+          # run check formatting of files in tf-modules directory
+          make tf-fmt TF_ARGS=-checka
