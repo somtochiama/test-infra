@@ -20,4 +20,4 @@ jobs:
       - name: Check tf files
         run: |
           # run check formatting of files in tf-modules directory
-          make tf-fmt TF_ARGS=-check -diff
+          make tf-fmt TF_ARGS="-check -diff"
