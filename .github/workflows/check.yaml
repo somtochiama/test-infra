@@ -1,4 +1,4 @@
-name: terraform-fmt
+name: check
 
 on:
   pull_request:
@@ -8,16 +8,16 @@ on:
 
 jobs:
   terraform-fmt:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2
         with:
-          terraform_version: 1.2.8
+          terraform_version: latest
           terraform_wrapper: false
       - name: Check tf files
         run: |
           # run check formatting of files in tf-modules directory
-          make tf-fmt TF_ARGS=-checka
+          make tf-fmt TF_ARGS=-check -diff
