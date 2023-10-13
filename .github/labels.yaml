@@ -1,0 +1,9 @@
+# Configuration file to declaratively configure labels
+# Ref: https://github.com/EndBug/label-sync#Config-files
+
+- name: area/terraform
+  description: Terraform related issues and pull requests
+  color: '#00b140'
+- name: area/tftestenv
+  description: Tftestenv package related issues and pull requests
+  color: '#863faf'
